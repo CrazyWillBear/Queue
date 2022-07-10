@@ -1,0 +1,4 @@
+name: Queue
+version: '${project.version}'
+main: net.capbear.queue.Queue
+description: Queue from one server to another
