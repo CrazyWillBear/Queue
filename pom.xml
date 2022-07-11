@@ -6,7 +6,7 @@
 
     <groupId>net.capbear</groupId>
     <artifactId>Queue</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>Queue</name>

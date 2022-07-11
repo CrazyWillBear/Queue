@@ -15,17 +15,21 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.scheduler.TaskScheduler;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 import net.md_5.bungee.event.EventHandler;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public final class Queue extends Plugin implements Listener {
-    // configurable variables
-    private static final String queueServerName = "hub"; // replace with the name of your queue server
-    private static final String destinationServerName = "survival"; // replace with the name of your destination server
-    private static final int maxPlayersDestinationServer = 100; // replace with the maximum number of players allowed on your destination server
-
+    // init variables
+    String queueServerName;
+    String destinationServerName;
+    int maxPlayersDestinationServer;
     Vector<ProxiedPlayer> queue; // non-configurable, leave as-is
     @Override
     public void onEnable() {
@@ -35,11 +39,35 @@ public final class Queue extends Plugin implements Listener {
         getProxy().getPluginManager().registerListener(this, this);
 
         TaskScheduler scheduler = getProxy().getScheduler();
+
+        Configuration configuration = new Configuration();
+
+        if (!getDataFolder().exists()) { getDataFolder().mkdir(); }
+        File configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            configuration.set("queue-server", "hub");
+            configuration.set("dest-server", "survival");
+            configuration.set("max-players", 100);
+
+            try { ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, new File(getDataFolder(), "config.yml")); }
+            catch (IOException e) { throw new RuntimeException(e); }
+        }
+
+        try { configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml")); }
+        catch (IOException e) { }
+
+        String queueServerName = (String) configuration.get("queue-server");
+        String destinationServerName = (String) configuration.get("dest-server");
+        int maxPlayersDestinationServer = (int) configuration.get("max-players");
         scheduler.schedule(this, new Runnable() {
             @Override
             public void run() {
                 System.out.println("Players on " + destinationServerName + ": " + getProxy().getServerInfo(destinationServerName).getPlayers().size() + "\t|\tQueue Size: " + queue.size());
-                if (queue.size() > 0) { if (queue.get(0).getServer().getInfo() == getProxy().getServerInfo(destinationServerName)) { queue.remove(0); } } // nested if statement to avoid IndexOutofRange error
+                if (queue.size() > 0) {
+                    if (queue.get(0).getServer().getInfo() == getProxy().getServerInfo(destinationServerName)) {
+                        queue.remove(0);
+                    }
+                } // nested if statement to avoid IndexOutofRange error
                 for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
                     ComponentBuilder builder = new ComponentBuilder();
                     builder.append("You are currently in position " + (queue.indexOf(player) + 1) + "/" + (queue.size())).color(ChatColor.AQUA);
