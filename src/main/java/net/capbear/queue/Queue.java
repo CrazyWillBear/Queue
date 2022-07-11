@@ -64,9 +64,7 @@ public final class Queue extends Plugin implements Listener {
             public void run() {
                 System.out.println("Players on " + destinationServerName + ": " + getProxy().getServerInfo(destinationServerName).getPlayers().size() + "\t|\tQueue Size: " + queue.size());
                 if (queue.size() > 0) {
-                    if (queue.get(0).getServer().getInfo() == getProxy().getServerInfo(destinationServerName)) {
-                        queue.remove(0);
-                    }
+                    if (queue.get(0).getServer().getInfo() == getProxy().getServerInfo(destinationServerName)) { queue.remove(0); }
                 } // nested if statement to avoid IndexOutofRange error
                 for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
                     ComponentBuilder builder = new ComponentBuilder();
@@ -86,13 +84,12 @@ public final class Queue extends Plugin implements Listener {
     public void onPostLogin(PostLoginEvent event) {
         // this assumes player is forced to join queue server
         queue.add(event.getPlayer());
+        if (event.getPlayer().getServer() == null) { queue.remove(event.getPlayer()); }
     } // add player to queue upon login
 
     @EventHandler
     public void onPlayerDisconnect(PlayerDisconnectEvent event) {
-        if (event.getPlayer().getServer().getInfo().getName().equals(queueServerName)) {
-            queue.remove(event.getPlayer());
-        }
+        if (event.getPlayer().getServer().getInfo().getName().equals(queueServerName)) { queue.remove(event.getPlayer()); }
     } // remove player from queue if they disconnect from queue server
 
     @Override
