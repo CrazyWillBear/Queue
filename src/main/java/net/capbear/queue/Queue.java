@@ -39,19 +39,19 @@ public final class Queue extends Plugin implements Listener {
             @Override
             public void run() {
                 System.out.println("Players on " + destinationServerName + ": " + getProxy().getServerInfo(destinationServerName).getPlayers().size() + "\t|\tQueue Size: " + queue.size());
+                if (queue.size() > 0) { if (queue.get(0).getServer().getInfo() == getProxy().getServerInfo(destinationServerName)) { queue.remove(0); } } // nested if statement to avoid IndexOutofRange error
                 for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
                     ComponentBuilder builder = new ComponentBuilder();
                     builder.append("You are currently in position " + (queue.indexOf(player) + 1) + "/" + (queue.size())).color(ChatColor.AQUA);
-                    Title title = ProxyServer.getInstance().createTitle().title(builder.create()).fadeOut(100).fadeIn(0);
+                    Title title = ProxyServer.getInstance().createTitle().title(builder.create()).fadeOut(25).fadeIn(0);
                     title.send(player);
                 } // send each player a title containing queue info
                 if (getProxy().getServerInfo(destinationServerName).getPlayers().size() < maxPlayersDestinationServer && queue.size() > 0) {
                     ServerInfo destination = getProxy().getServerInfo(destinationServerName);
                     queue.get(0).connect(destination);
-                    queue.remove(0);
                 } // if at front of line and slot is open, send to main server
             }
-        }, 5, 5, TimeUnit.SECONDS); // repeat forever every 5 seconds
+        }, 1, 1, TimeUnit.SECONDS); // repeat forever every 5 seconds
     }
 
     @EventHandler
