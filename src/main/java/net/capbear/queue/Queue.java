@@ -65,13 +65,15 @@ public final class Queue extends Plugin implements Listener {
                 System.out.println("Players on " + destinationServerName + ": " + getProxy().getServerInfo(destinationServerName).getPlayers().size() + "\t|\tQueue Size: " + queue.size());
 
                 if (queue.size() > 0) {
-                    if (!queue.get(0).isConnected() || queue.get(0).getServer() == null || queue.get(0).getServer().getInfo() != getProxy().getServerInfo(queueServerName)) {
+                    ProxiedPlayer p = queue.get(0);
+                    if (!p.isConnected() || p.getServer() == null || p.getServer().getInfo() != getProxy().getServerInfo(queueServerName)) {
                         queue.remove(0);
-                        System.out.println("Removed " + queue.get(0).getName() + " from queue, they are on server " + queue.get(0).getServer().getInfo().getName());
+                        System.out.println("Removed " + p.getName() + " from queue, they are on server " + p.getServer().getInfo().getName());
                     }
                 } // nested if statement to avoid IndexOutofRange and null server error
 
                 for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
+                    if (!queue.contains(player)) { queue.add(player); }
                     ComponentBuilder builder = new ComponentBuilder();
                     builder.append("You are currently in position " + (queue.indexOf(player) + 1) + "/" + (queue.size())).color(ChatColor.AQUA);
                     Title title = ProxyServer.getInstance().createTitle().title(builder.create()).fadeOut(25).fadeIn(0);
