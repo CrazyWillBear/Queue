@@ -94,6 +94,11 @@ public final class Queue extends Plugin implements Listener {
         queue.add(event.getPlayer());
     } // add player to queue upon login
 
+    @EventHandler
+    public void onPlayerDisconnect(PlayerDisconnectEvent event) {
+        if (event.getPlayer().getServer().getInfo().getName().equals(queueServerName) { queue.remove(event.getPlayer()); }
+    }
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic
