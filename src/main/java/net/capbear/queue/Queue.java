@@ -91,7 +91,9 @@ public final class Queue extends Plugin implements Listener {
 
     @EventHandler
     public void onPlayerDisconnect(PlayerDisconnectEvent event) {
-        if (event.getPlayer().getServer().getInfo().getName().equals(queueServerName)) { queue.remove(event.getPlayer()); }
+        if (event.getPlayer().getServer() != null) {
+            if (event.getPlayer().getServer().getInfo().getName().equals(queueServerName)) { queue.remove(event.getPlayer()); }
+        }
     } // remove player from queue if they disconnect from queue server
 
     @Override
