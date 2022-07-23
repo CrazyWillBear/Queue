@@ -76,7 +76,7 @@ public final class Queue extends Plugin implements Listener {
                     if (!queue.contains(player)) { queue.add(player); }
                     ComponentBuilder builder = new ComponentBuilder();
                     builder.append("You are currently in position " + (queue.indexOf(player) + 1) + "/" + (queue.size())).color(ChatColor.AQUA);
-                    Title title = ProxyServer.getInstance().createTitle().title(builder.create()).fadeOut(105).fadeIn(0);
+                    Title title = ProxyServer.getInstance().createTitle().title(builder.create()).fadeOut(25).fadeIn(0);
                     title.send(player);
                 } // send each player a title containing queue info
 
@@ -85,7 +85,7 @@ public final class Queue extends Plugin implements Listener {
                     queue.get(0).connect(destination);
                 } // if at front of line and slot is open, send to main server
             }
-        }, 5, 5, TimeUnit.SECONDS); // repeat forever every 5 seconds
+        }, 1, 1, TimeUnit.SECONDS); // repeat forever every 5 seconds
     }
 
     @EventHandler
