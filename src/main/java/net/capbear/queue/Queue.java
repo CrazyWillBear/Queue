@@ -80,7 +80,7 @@ public final class Queue extends Plugin implements Listener {
                     title.send(player);
                 } // send each player a title containing queue info
 
-                if (getProxy().getServerInfo(destinationServerName).getPlayers().size() < maxPlayersDestinationServer && queue.size() > 0) {
+                if (getProxy().getServerInfo(destinationServerName).getPlayers().size() < maxPlayersDestinationServer && queue.size() > 0 && getProxy().getServerInfo(destinationServerName) != null) {
                     ServerInfo destination = getProxy().getServerInfo(destinationServerName);
                     queue.get(0).connect(destination);
                 } // if at front of line and slot is open, send to main server
