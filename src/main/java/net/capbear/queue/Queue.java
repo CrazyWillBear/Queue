@@ -5,9 +5,6 @@
 package net.capbear.queue;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.Title;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -74,11 +71,8 @@ public final class Queue extends Plugin implements Listener {
 
                 for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
                     if (!queue.contains(player)) { queue.add(player); }
-                    ComponentBuilder builder = new ComponentBuilder();
-                    builder.append("You are currently in position " + (queue.indexOf(player) + 1) + "/" + (queue.size())).color(ChatColor.AQUA);
-                    Title title = ProxyServer.getInstance().createTitle().title(builder.create()).fadeOut(25).fadeIn(0);
-                    title.send(player);
-                } // send each player a title containing queue info
+                    player.sendMessage(ChatColor.AQUA.toString() + ChatColor.BOLD.toString() + "[QUEUE] " + ChatColor.RESET.toString() + ChatColor.AQUA.toString() + "You are currently in position " + (queue.indexOf(player) + 1) + "/" + queue.size());
+                } // send each player a message containing queue info
 
                 if (getProxy().getServerInfo(destinationServerName).getPlayers().size() < maxPlayersDestinationServer && queue.size() > 0) {
 
