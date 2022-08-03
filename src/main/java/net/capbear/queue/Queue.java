@@ -81,7 +81,7 @@ public final class Queue extends Plugin implements Listener {
                     queue.remove(0);
                 } // if at front of line and slot is open, send to main server
 
-                for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
+                for (ProxiedPlayer player : queue) {
                     if (!queue.contains(player)) { queue.add(player); }
                     player.sendMessage(ChatColor.DARK_AQUA.toString() + ChatColor.BOLD.toString() + "[QUEUE] " + ChatColor.RESET.toString() + ChatColor.DARK_AQUA.toString() + "You are currently in position " + (queue.indexOf(player) + 1) + "/" + queue.size());
                 } // send each player a message containing queue info
