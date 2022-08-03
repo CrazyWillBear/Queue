@@ -71,7 +71,7 @@ public final class Queue extends Plugin implements Listener {
 
                 for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
                     if (!queue.contains(player)) { queue.add(player); }
-                    player.sendMessage(ChatColor.AQUA.toString() + ChatColor.BOLD.toString() + "[QUEUE] " + ChatColor.RESET.toString() + ChatColor.AQUA.toString() + "You are currently in position " + (queue.indexOf(player) + 1) + "/" + queue.size());
+                    player.sendMessage(ChatColor.DARK_AQUA.toString() + ChatColor.BOLD.toString() + "[QUEUE] " + ChatColor.RESET.toString() + ChatColor.DARK_AQUA.toString() + "You are currently in position " + (queue.indexOf(player) + 1) + "/" + queue.size());
                 } // send each player a message containing queue info
 
                 if (getProxy().getServerInfo(destinationServerName).getPlayers().size() < maxPlayersDestinationServer && queue.size() > 0) {
