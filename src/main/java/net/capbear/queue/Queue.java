@@ -78,6 +78,7 @@ public final class Queue extends Plugin implements Listener {
                         throw new RuntimeException(e);
                     }
                     queue.get(0).connect(destination);
+                    queue.remove(0);
                 } // if at front of line and slot is open, send to main server
 
                 for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
