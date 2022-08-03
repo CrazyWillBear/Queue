@@ -69,11 +69,6 @@ public final class Queue extends Plugin implements Listener {
                     }
                 } // nested if statement to avoid IndexOutofRange and null server error
 
-                for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
-                    if (!queue.contains(player)) { queue.add(player); }
-                    player.sendMessage(ChatColor.DARK_AQUA.toString() + ChatColor.BOLD.toString() + "[QUEUE] " + ChatColor.RESET.toString() + ChatColor.DARK_AQUA.toString() + "You are currently in position " + (queue.indexOf(player) + 1) + "/" + queue.size());
-                } // send each player a message containing queue info
-
                 if (getProxy().getServerInfo(destinationServerName).getPlayers().size() < maxPlayersDestinationServer && queue.size() > 0) {
 
                     ServerInfo destination = getProxy().getServerInfo(destinationServerName);
@@ -84,6 +79,12 @@ public final class Queue extends Plugin implements Listener {
                     }
                     queue.get(0).connect(destination);
                 } // if at front of line and slot is open, send to main server
+
+                for (ProxiedPlayer player : getProxy().getServerInfo(queueServerName).getPlayers()) {
+                    if (!queue.contains(player)) { queue.add(player); }
+                    player.sendMessage(ChatColor.DARK_AQUA.toString() + ChatColor.BOLD.toString() + "[QUEUE] " + ChatColor.RESET.toString() + ChatColor.DARK_AQUA.toString() + "You are currently in position " + (queue.indexOf(player) + 1) + "/" + queue.size());
+                } // send each player a message containing queue info
+
             }
         }, 1, 1, TimeUnit.SECONDS); // repeat forever every 5 seconds
     }
